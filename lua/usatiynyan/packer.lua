@@ -55,4 +55,10 @@ return require('packer').startup(function(use)
 
   use('github/copilot.vim')
 
+  use {
+      'mrcjkb/haskell-tools.nvim',
+      version = '^3', -- Recommended
+      ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
+  }
+
 end)
