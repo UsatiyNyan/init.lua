@@ -8,9 +8,6 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
-  use('mbbill/undotree')
-  use('tpope/vim-fugitive')
-
   use {
       'VonHeikemen/lsp-zero.nvim',
       branch = 'v1.x',
@@ -34,7 +31,6 @@ return require('packer').startup(function(use)
       }
   }
 
-  use('github/copilot.vim')
 
   use {
       'mrcjkb/haskell-tools.nvim',
