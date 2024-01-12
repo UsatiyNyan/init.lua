@@ -1,3 +1,6 @@
+return {}
+
+--[[
 local lsp = require('lsp-zero')
 
 lsp.preset('recommended')
@@ -53,39 +56,10 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
 end)
 
--- Autocmd that will actually be in charging of starting hls
-local hls_augroup = vim.api.nvim_create_augroup('haskell-lsp', {clear = true})
-vim.api.nvim_create_autocmd('FileType', {
-  group = hls_augroup,
-  pattern = {'haskell'},
-  callback = function()
-    ---
-    -- Suggested keymaps from the quick setup section:
-    -- https://github.com/mrcjkb/haskell-tools.nvim#quick-setup
-    ---
-
-    local ht = require('haskell-tools')
-    local bufnr = vim.api.nvim_get_current_buf()
-    local def_opts = { noremap = true, silent = true, buffer = bufnr, }
-    -- haskell-language-server relies heavily on codeLenses,
-    -- so auto-refresh (see advanced configuration) is enabled by default
-    vim.keymap.set('n', '<space>ca', vim.lsp.codelens.run, opts)
-    -- Hoogle search for the type signature of the definition under the cursor
-    vim.keymap.set('n', '<space>hs', ht.hoogle.hoogle_signature, opts)
-    -- Evaluate all code snippets
-    vim.keymap.set('n', '<space>ea', ht.lsp.buf_eval_all, opts)
-    -- Toggle a GHCi repl for the current package
-    vim.keymap.set('n', '<leader>rr', ht.repl.toggle, opts)
-    -- Toggle a GHCi repl for the current buffer
-    vim.keymap.set('n', '<leader>rf', function()
-      ht.repl.toggle(vim.api.nvim_buf_get_name(0))
-    end, def_opts)
-    vim.keymap.set('n', '<leader>rq', ht.repl.quit, opts)
-  end
-})
-
 lsp.setup()
 
 vim.diagnostic.config({
     virtual_text = true
 })
+--]]
+
