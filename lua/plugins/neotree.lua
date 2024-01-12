@@ -9,8 +9,6 @@ return {
     keys = {
         { '<leader>nt', '<cmd>Neotree toggle<cr>', desc = 'NeoTree' },
     },
-    config = function()
-        require('neo-tree').setup()
-    end,
+    config = true,
 }
 

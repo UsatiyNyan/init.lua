@@ -45,13 +45,12 @@ end
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-    -- clangd = {},
+    clangd = {},
     -- gopls = {},
     -- pyright = {},
     -- rust_analyzer = {},
     -- tsserver = {},
     -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
     lua_ls = {
         Lua = {
             workspace = { checkThirdParty = false },
@@ -63,31 +62,112 @@ local servers = {
 }
 
 return {
-    'neovim/nvim-lspconfig',
-    dependencies = {
-        { 'hrsh7th/nvim-cmp' },
-        { 'williamboman/mason.nvim',           config = true },
-        { 'williamboman/mason-lspconfig.nvim', config = true },
-        { 'j-hui/fidget.nvim',                 opts = {} },
-        { 'folke/neodev.nvim',                 config = true },
-    },
-    config = function()
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-        local mason_lspconfig = require('mason-lspconfig')
-        mason_lspconfig.setup({
-            ensure_installed = vim.tbl_keys(servers),
-        })
-        mason_lspconfig.setup_handlers({
-            function(server_name)
-                require('lspconfig')[server_name].setup {
-                    capabilities = capabilities,
-                    on_attach = on_attach,
-                    settings = servers[server_name],
-                    filetypes = (servers[server_name] or {}).filetypes,
+    {
+        'neovim/nvim-lspconfig',
+        dependencies = {
+            'hrsh7th/nvim-cmp',
+            {
+                'williamboman/mason.nvim',
+                opts = {
+                    ensure_installed = {
+                        'clang-format',
+                        'codelldb',
+                    }
                 }
-            end,
-        })
-    end,
+            },
+            {
+                'williamboman/mason-lspconfig.nvim',
+                dependencies = {
+                    'williamboman/mason.nvim',
+                },
+                opts = {
+                    ensure_installed = vim.tbl_keys(servers),
+                },
+            },
+            { 'j-hui/fidget.nvim', opts = {} },
+            { 'folke/neodev.nvim', config = true },
+        },
+        config = function()
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+            local mason_lspconfig = require('mason-lspconfig')
+            mason_lspconfig.setup_handlers({
+                function(server_name)
+                    require('lspconfig')[server_name].setup {
+                        capabilities = capabilities,
+                        on_attach = on_attach,
+                        settings = servers[server_name],
+                        filetypes = (servers[server_name] or {}).filetypes,
+                    }
+                end,
+            })
+        end,
+    },
+    {
+        'jose-elias-alvarez/null-ls.nvim',
+        event = 'VeryLazy',
+        opts = function()
+            local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+            local null_ls = require('null-ls')
+
+            return {
+                sources = {
+                    null_ls.builtins.formatting.clang_format,
+                },
+                on_attach = function(client, bufnr)
+                    if client.supports_method('textDocument/formatting') then
+                        vim.api.nvim_clear_autocmds({
+                            group = augroup,
+                            buffer = bufnr,
+                        })
+                        vim.api.nvim_create_autocmd('BufWritePre', {
+                            group = augroup,
+                            buffer = bufnr,
+                            callback = function()
+                                vim.lsp.buf.format({ bufnr = bufnr })
+                            end,
+                        })
+                    end
+                end,
+            }
+        end,
+    },
+    {
+        'rcarriga/nvim-dap-ui',
+        event = 'VeryLazy',
+        dependencies = 'mfussenegger/nvim-dap',
+        config = function()
+            local dap = require('dap')
+            local dapui = require('dapui')
+            dapui.setup()
+            dap.listeners.after.event_initialized['dapui_config'] = function()
+                dapui.open()
+            end
+            dap.listeners.before.event_terminated['dapui_config'] = function()
+                dapui.close()
+            end
+            dap.listeners.before.event_exited['dapui_config'] = function()
+                dapui.close()
+            end
+        end
+    },
+    {
+        'jay-babu/mason-nvim-dap.nvim',
+        event = 'VeryLazy',
+        dependencies = {
+            'williamboman/mason.nvim',
+            'mfussenegger/nvim-dap',
+        },
+        opts = {
+            handlers = {}
+        },
+    },
+    {
+        'mfussenegger/nvim-dap',
+        config = function()
+            vim.keymap.set('n', '<leader>db', '<cmd> DapToggleBreakpoint <CR>', { desc = 'Add breakpoint at line' })
+            vim.keymap.set('n', '<leader>dr', '<cmd> DapContinue <CR>', { desc = 'Start or continue the debugger' })
+        end
+    },
 }
