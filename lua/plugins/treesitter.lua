@@ -17,13 +17,16 @@ return {
                     'rust',
                     'javascript',
                     'html',
+                    'bash',
                 },
                 sync_install = false,
                 highlight = { enable = true },
                 indent = { enable = true },
+                modules = {},
+                auto_install = false,
+                ignore_install = {},
             })
         end
     },
     'nvim-treesitter/nvim-treesitter-context'
 }
-
