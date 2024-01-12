@@ -16,6 +16,7 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = os.getenv('HOME') .. '/.vim/undodir'
 vim.opt.undofile = true
+vim.opt.clipboard = 'unnamedplus'
 
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
@@ -30,4 +31,5 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = '100'
 
 vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
