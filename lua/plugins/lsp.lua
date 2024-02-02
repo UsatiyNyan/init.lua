@@ -46,7 +46,7 @@ end
 --  define the property 'filetypes' to the map in question.
 local servers = {
     clangd = {
-        cmd = {'clangd', '--compile-commands-dir=./build'}
+        cmd = { 'clangd', '--compile-commands-dir=./build' }
     },
     -- gopls = {},
     -- pyright = {},
@@ -65,27 +65,27 @@ local servers = {
 
 return {
     {
+        'williamboman/mason.nvim',
+        opts = {
+            ensure_installed = {
+                'clang-format',
+                'codelldb',
+                'rust-analyzer',
+            }
+        },
+    },
+    {
+        'williamboman/mason-lspconfig.nvim',
+        dependencies = 'williamboman/mason.nvim',
+        opts = {
+            ensure_installed = vim.tbl_keys(servers),
+        },
+    },
+    {
         'neovim/nvim-lspconfig',
         dependencies = {
             'hrsh7th/nvim-cmp',
-            {
-                'williamboman/mason.nvim',
-                opts = {
-                    ensure_installed = {
-                        'clang-format',
-                        'codelldb',
-                    }
-                }
-            },
-            {
-                'williamboman/mason-lspconfig.nvim',
-                dependencies = {
-                    'williamboman/mason.nvim',
-                },
-                opts = {
-                    ensure_installed = vim.tbl_keys(servers),
-                },
-            },
+            'williamboman/mason-lspconfig.nvim',
             { 'j-hui/fidget.nvim', opts = {} },
             { 'folke/neodev.nvim', config = true },
         },
@@ -136,6 +136,30 @@ return {
         end,
     },
     {
+        'mfussenegger/nvim-dap',
+        config = function()
+            vim.keymap.set('n', '<leader>db', '<cmd> DapToggleBreakpoint <CR>', { desc = 'Add breakpoint at line' })
+            vim.keymap.set('n', '<leader>dr', '<cmd> DapContinue <CR>', { desc = 'Start or continue the debugger' })
+            vim.keymap.set('n', '<leader>dus', function()
+                    local widgets = require('dap.ui.widgets')
+                    local sidebar = widgets.sidebar(widgets.scopes)
+                    sidebar.open()
+                end,
+                { desc = 'Open debugging sidebar' })
+        end
+    },
+    {
+        'jay-babu/mason-nvim-dap.nvim',
+        event = 'VeryLazy',
+        dependencies = {
+            'williamboman/mason.nvim',
+            'mfussenegger/nvim-dap',
+        },
+        opts = {
+            handlers = {}
+        },
+    },
+    {
         'rcarriga/nvim-dap-ui',
         event = 'VeryLazy',
         dependencies = 'mfussenegger/nvim-dap',
@@ -155,21 +179,34 @@ return {
         end
     },
     {
-        'jay-babu/mason-nvim-dap.nvim',
-        event = 'VeryLazy',
-        dependencies = {
-            'williamboman/mason.nvim',
-            'mfussenegger/nvim-dap',
-        },
-        opts = {
-            handlers = {}
-        },
+        'mrcjkb/rustaceanvim',
+        version = '^4',
+        ft = 'rust',
+        dependencies = 'neovim/nvim-lspconfig',
+        config = function()
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+            vim.g.rustaceanvim = {
+                server = {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                },
+            }
+        end
     },
     {
-        'mfussenegger/nvim-dap',
+        'rust-lang/rust.vim',
+        ft = 'rust',
+        init = function ()
+            vim.g.rustfmt_autosave = 1
+        end
+    },
+    {
+        'theHamsta/nvim-dap-virtual-text',
+        lazy = false,
         config = function()
-            vim.keymap.set('n', '<leader>db', '<cmd> DapToggleBreakpoint <CR>', { desc = 'Add breakpoint at line' })
-            vim.keymap.set('n', '<leader>dr', '<cmd> DapContinue <CR>', { desc = 'Start or continue the debugger' })
+            require('nvim-dap-virtual-text').setup()
         end
     },
 }
