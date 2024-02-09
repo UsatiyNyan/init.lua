@@ -81,4 +81,8 @@ return {
             end, { desc = 'Rust: update crates' })
         end,
     },
+    {
+        'numToStr/Comment.nvim',
+        opts = {},
+    }
 }
