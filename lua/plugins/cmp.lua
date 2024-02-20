@@ -13,6 +13,8 @@ return {
 
             -- Adds a number of user-friendly snippets
             'rafamadriz/friendly-snippets',
+
+            'kirasok/cmp-hledger',
         },
         config = function()
             local cmp = require('cmp')
@@ -64,6 +66,7 @@ return {
                     { name = 'luasnip' },
                     { name = 'path' },
                     { name = 'crates' },
+                    { name = 'hledger' },
                 },
             }
         end,
@@ -84,5 +87,9 @@ return {
     {
         'numToStr/Comment.nvim',
         opts = {},
+    },
+    {
+        'kirasok/cmp-hledger',
+        ft = ".journal"
     }
 }
