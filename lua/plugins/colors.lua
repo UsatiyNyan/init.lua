@@ -22,15 +22,22 @@ return {
     },
     {
         'nyoom-engineering/oxocarbon.nvim',
-        lazy = false,
-        priority = 1000,
         config = function()
             vim.opt.background = 'dark'
-            vim.cmd.colorscheme 'oxocarbon'
+            -- vim.cmd.colorscheme 'oxocarbon'
             -- for transparent background:
             -- vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
             -- vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
         end
-    }
+    },
+    {
+        'rose-pine/neovim',
+        lazy = false,
+        priority = 1000,
+        config = function()
+            vim.g.rose_pine_variant = 'main'
+            vim.cmd.colorscheme 'rose-pine'
+        end
+    },
 }
 
