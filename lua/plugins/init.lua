@@ -70,5 +70,9 @@ return {
         config = function()
             require("copilot_cmp").setup()
         end,
+    },
+    {
+        "christoomey/vim-tmux-navigator",
+        lazy = false,
     }
 }
