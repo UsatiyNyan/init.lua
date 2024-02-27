@@ -50,7 +50,7 @@ local servers = {
         cmd = { 'clangd', '--compile-commands-dir=./build' }
     },
     -- gopls = {},
-    -- pyright = {},
+    pylsp = {},
     rust_analyzer = {},
     -- tsserver = {},
     -- html = { filetypes = { 'html', 'twig', 'hbs'} },
@@ -199,15 +199,15 @@ return {
     {
         'rust-lang/rust.vim',
         ft = 'rust',
-        init = function ()
+        init = function()
             vim.g.rustfmt_autosave = 1
         end
     },
     {
         'theHamsta/nvim-dap-virtual-text',
         lazy = false,
-        config = function()
-            require('nvim-dap-virtual-text').setup()
+        config = function(opts)
+            require('nvim-dap-virtual-text').setup(opts)
         end
     },
 }
