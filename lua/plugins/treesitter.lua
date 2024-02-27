@@ -18,6 +18,8 @@ return {
                     'javascript',
                     'html',
                     'bash',
+                    'qmljs',
+                    'qmldir',
                 },
                 sync_install = false,
                 highlight = { enable = true },
