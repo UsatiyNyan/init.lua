@@ -74,5 +74,13 @@ return {
     {
         "christoomey/vim-tmux-navigator",
         lazy = false,
+    },
+    {
+        'lewis6991/gitsigns.nvim',
+        lazy = false,
+        depends = { 'nvim-lua/plenary.nvim' },
+        config = function()
+            require('gitsigns').setup()
+        end
     }
 }
