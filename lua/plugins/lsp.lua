@@ -49,6 +49,10 @@ local servers = {
     clangd = {
         cmd = { 'clangd', '--compile-commands-dir=./build' }
     },
+    neocmake = {
+        cmd = { 'neocmakelsp', '--stdio' },
+        filetypes = { 'cmake' },
+    },
     -- gopls = {},
     pylsp = {},
     rust_analyzer = {},
@@ -71,7 +75,6 @@ return {
             ensure_installed = {
                 'clang-format',
                 'codelldb',
-                'rust-analyzer',
             }
         },
     },
@@ -177,23 +180,6 @@ return {
             dap.listeners.before.event_exited['dapui_config'] = function()
                 dapui.close()
             end
-        end
-    },
-    {
-        'mrcjkb/rustaceanvim',
-        version = '^4',
-        ft = 'rust',
-        dependencies = 'neovim/nvim-lspconfig',
-        config = function()
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-            vim.g.rustaceanvim = {
-                server = {
-                    on_attach = on_attach,
-                    capabilities = capabilities,
-                },
-            }
         end
     },
     {
