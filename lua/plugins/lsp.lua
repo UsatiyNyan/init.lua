@@ -18,6 +18,7 @@ local on_attach = function(_, bufnr)
     nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
     nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
     nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+    nmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -29,12 +30,6 @@ local on_attach = function(_, bufnr)
     -- nmap('<leader>wl', function()
     --     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     -- end, '[W]orkspace [L]ist Folders')
-
-    -- Create a command `:Format` local to the LSP buffer
-    vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-        vim.lsp.buf.format()
-    end, { desc = 'Format current buffer with LSP' })
-    nmap('<leader>cf', ':Format<CR>', '[C]ode [F]ormat')
 end
 
 -- Enable the following language servers
@@ -77,7 +72,6 @@ return {
         'williamboman/mason.nvim',
         opts = {
             ensure_installed = {
-                'clang-format',
                 'codelldb',
             }
         },
@@ -112,35 +106,6 @@ return {
                     }
                 end,
             })
-        end,
-    },
-    {
-        'jose-elias-alvarez/null-ls.nvim',
-        event = 'VeryLazy',
-        opts = function()
-            local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
-            local null_ls = require('null-ls')
-
-            return {
-                sources = {
-                    null_ls.builtins.formatting.clang_format,
-                },
-                on_attach = function(client, bufnr)
-                    if client.supports_method('textDocument/formatting') then
-                        vim.api.nvim_clear_autocmds({
-                            group = augroup,
-                            buffer = bufnr,
-                        })
-                        vim.api.nvim_create_autocmd('BufWritePre', {
-                            group = augroup,
-                            buffer = bufnr,
-                            callback = function()
-                                vim.lsp.buf.format({ bufnr = bufnr })
-                            end,
-                        })
-                    end
-                end,
-            }
         end,
     },
     {
