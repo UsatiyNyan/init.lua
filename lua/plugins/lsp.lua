@@ -46,18 +46,6 @@ end
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-    clangd = {
-        cmd = { 'clangd', '--compile-commands-dir=./build' }
-    },
-    neocmake = {
-        cmd = { 'neocmakelsp', '--stdio' },
-        filetypes = { 'cmake' },
-    },
-    -- gopls = {},
-    pylsp = {},
-    rust_analyzer = {},
-    -- tsserver = {},
-    -- html = { filetypes = { 'html', 'twig', 'hbs'} },
     lua_ls = {
         Lua = {
             workspace = { checkThirdParty = false },
@@ -66,6 +54,22 @@ local servers = {
             -- diagnostics = { disable = { 'missing-fields' } },
         },
     },
+
+    clangd = {
+        cmd = { 'clangd', '--compile-commands-dir=./build' }
+    },
+    neocmake = {
+        cmd = { 'neocmakelsp', '--stdio' },
+        filetypes = { 'cmake' },
+    },
+
+    -- gopls = {},
+    rust_analyzer = {},
+    pylsp = {},
+    -- tsserver = {},
+    -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+
+    hls = {},
 }
 
 return {
@@ -145,5 +149,10 @@ return {
         init = function()
             vim.g.rustfmt_autosave = 1
         end
+    },
+    {
+        'mrcjkb/haskell-tools.nvim',
+        version = '^3',
+        ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
     },
 }
