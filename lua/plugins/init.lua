@@ -57,30 +57,7 @@ return {
         }
     },
     {
-        'zbirenbaum/copilot.lua',
-        lazy = false,
-        opts = {
-            suggestion = { enabled = false },
-            panel = { enabled = false },
-        }
-    },
-    {
-        "zbirenbaum/copilot-cmp",
-        lazy = false,
-        config = function()
-            require("copilot_cmp").setup()
-        end,
-    },
-    {
         "christoomey/vim-tmux-navigator",
         lazy = false,
     },
-    {
-        'lewis6991/gitsigns.nvim',
-        lazy = false,
-        depends = { 'nvim-lua/plenary.nvim' },
-        config = function()
-            require('gitsigns').setup()
-        end
-    }
 }

@@ -2,7 +2,7 @@ return {
     'theprimeagen/harpoon',
     keys = {
         { '<leader>ha', desc = 'Harpoon: add file' },
-        { '<leader>hm', desc = 'Harpoon: quick menu' }, 
+        { '<leader>hm', desc = 'Harpoon: quick menu' },
         { '<leader>h1', desc = 'Harpoon: file 1' },
         { '<leader>h2', desc = 'Harpoon: file 2' },
         { '<leader>h3', desc = 'Harpoon: file 3' },
@@ -21,4 +21,3 @@ return {
         vim.keymap.set('n', '<leader>h4', function() ui.nav_file(4) end)
     end
 }
-

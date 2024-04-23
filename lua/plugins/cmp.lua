@@ -13,8 +13,6 @@ return {
 
             -- Adds a number of user-friendly snippets
             'rafamadriz/friendly-snippets',
-
-            'kirasok/cmp-hledger',
         },
         config = function()
             local cmp = require('cmp')
@@ -48,35 +46,15 @@ return {
                     },
                 },
                 sources = {
-                    { name = 'copilot' },
                     { name = 'nvim_lsp' },
                     { name = 'luasnip' },
                     { name = 'path' },
-                    { name = 'crates' },
-                    { name = 'hledger' },
                 },
             }
-        end,
-    },
-    {
-        'saecki/crates.nvim',
-        ft = { 'toml' },
-        dependencies = 'hrsh7th/nvim-cmp',
-        config = function(_, opts)
-            local crates = require('crates')
-            crates.setup(opts)
-            crates.show()
-            vim.keymap.set('n', '<leader>rcu', function()
-                require('crates').upgrade_all_crates()
-            end, { desc = 'Rust: update crates' })
         end,
     },
     {
         'numToStr/Comment.nvim',
         opts = {},
     },
-    {
-        'kirasok/cmp-hledger',
-        ft = ".journal"
-    }
 }
