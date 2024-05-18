@@ -14,7 +14,7 @@ vim.opt.wrap = false
 
 vim.opt.swapfile = false
 vim.opt.backup = false
-local home = os.getenv("HOME") or os.getenv("USERPROFILE")
+local home = os.getenv('HOME') or os.getenv('USERPROFILE')
 vim.opt.undodir = home .. '/.vim/undodir'
 vim.opt.undofile = true
 vim.opt.clipboard = 'unnamedplus'
@@ -33,4 +33,3 @@ vim.opt.colorcolumn = '100'
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-

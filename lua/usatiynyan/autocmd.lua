@@ -8,3 +8,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+vim.cmd('autocmd BufRead,BufNewFile *.vert set filetype=glsl')
+vim.cmd('autocmd BufRead,BufNewFile *.frag set filetype=glsl')

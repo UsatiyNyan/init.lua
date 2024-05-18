@@ -57,6 +57,7 @@ local servers = {
         cmd = { 'neocmakelsp', '--stdio' },
         filetypes = { 'cmake' },
     },
+    glsl_analyzer = {},
 
     -- gopls = {},
     rust_analyzer = {},
