@@ -1,5 +1,5 @@
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
     local nmap = function(keys, func, desc)
         if desc then
             desc = 'LSP: ' .. desc
@@ -30,6 +30,11 @@ local on_attach = function(_, bufnr)
     -- nmap('<leader>wl', function()
     --     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     -- end, '[W]orkspace [L]ist Folders')
+
+    -- Specific to clients
+    if client.name == 'clangd' then
+        nmap('<leader>sh', ':ClangdSwitchSourceHeader<CR>', 'Switch [S]ource [H]eader')
+    end
 end
 
 -- Enable the following language servers

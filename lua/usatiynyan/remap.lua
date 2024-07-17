@@ -13,6 +13,7 @@ vim.keymap.set("x", "<leader>p", [["_dP]], { desc = 'Paste and dont lose the pas
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = 'yank!' })
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = 'Yank!' })
 
+-- Tmux
 vim.keymap.set('n', '<C-h>', '<cmd> TmuxNavigateLeft<CR>', { desc = 'window left' })
 vim.keymap.set('n', '<C-j>', '<cmd> TmuxNavigateDown<CR>', { desc = 'window down' })
 vim.keymap.set('n', '<C-k>', '<cmd> TmuxNavigateUp<CR>', { desc = 'window up' })
