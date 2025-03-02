@@ -112,6 +112,9 @@ return {
                     }
                 end,
             })
+
+            -- turn off logging
+            vim.lsp.set_log_level("off")
         end,
     },
     {
